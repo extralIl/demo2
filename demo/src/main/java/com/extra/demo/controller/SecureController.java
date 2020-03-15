@@ -4,8 +4,11 @@ import com.extra.demo.bean.User;
 import com.extra.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 @Controller
 public class SecureController {
@@ -14,9 +17,11 @@ public class SecureController {
     UserService userService;
 
 
-    @RequestMapping("/secure/getUserInfo")
+
+    @PostMapping(value = "/secure/getUserInfo")
     @ResponseBody
-    public User getUserInfo(String phoneNumber){
+    public User getUserInfo(HttpServletRequest request, HttpServletResponse response){
+        String phoneNumber = request.getParameter("phoneNumber");
         User user = userService.getUserByPhoneNumber(phoneNumber);
         return user;
     }
