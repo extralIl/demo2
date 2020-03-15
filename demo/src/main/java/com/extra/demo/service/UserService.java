@@ -17,5 +17,6 @@ public interface UserService {
 
     String checkVerifyNumber(String phoneNumber,String verifyNumber);
 
-    String getToken(String phoneNumber);
+
+    User getUserByPhoneNumber(String phoneNumber);
 }

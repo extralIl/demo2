@@ -2,6 +2,7 @@ package com.extra.demo.controller;
 
 import com.extra.demo.bean.User;
 import com.extra.demo.service.UserService;
+import com.extra.demo.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -134,7 +135,10 @@ public class UserController {
             //有该手机号
             String verifyNumberRes = userService.checkVerifyNumber(phoneNumber,verifyNumber);
             if(verifyNumberRes.equals("right number")){
-                String token = userService.getToken(phoneNumber);
+                //验证码正确
+                User user = userService.getUserByPhoneNumber(phoneNumber);
+                String token = JWTUtil.createToken(user);
+                res = token;
             }else{
                 //少写一些情况
                 res = "验证码错误";

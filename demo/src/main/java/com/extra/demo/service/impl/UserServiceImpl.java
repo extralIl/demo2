@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.redis.connection.DataType;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -83,9 +84,9 @@ public class UserServiceImpl implements UserService {
             userMapper.insertSelective(user);
             res = "1";
         }catch (Exception e){
-            if (e instanceof SQLIntegrityConstraintViolationException){
-                Logger logger = LoggerFactory.getLogger(getClass());
-                logger.info("saveUserInfo中手机号或邮箱有重复的");
+            e.printStackTrace();
+            if (e instanceof DuplicateKeyException){
+                System.out.println("邮箱或手机号重复");
             }
             res = "0";
         }
@@ -151,7 +152,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String checkPhoneNumber(String phoneNumber) {
         User userForCheckPhoneNumber = new User();
-        userForCheckPhoneNumber.setEmall(phoneNumber);
+        userForCheckPhoneNumber.setPhoneNumber(phoneNumber);
         List<User> hasPhoneNumber = userMapper.select(userForCheckPhoneNumber);
 
         if(hasPhoneNumber.size()==0){
@@ -189,15 +190,14 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    /**
-     * 生成token  phoneNumber+时间
-     * @param phoneNumber
-     * @return
-     */
+
+
     @Override
-    public String getToken(String phoneNumber) {
-        
-        return null;
+    public User getUserByPhoneNumber(String phoneNumber) {
+        User user = new User();
+        user.setPhoneNumber(phoneNumber);
+        List<User> users = userMapper.select(user);
+        return users.get(0);
     }
 
 
