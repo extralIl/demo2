@@ -13,7 +13,7 @@ import java.util.Map;
 
 
 //        链接：https://juejin.im/post/5dca491ff265da4d0e00afbf
-
+// 其实还可以自定义注解来选择拦截的接口,但是因为从来没写过注解,打算以后再学着写
 @WebFilter(filterName = "JWTFilter", urlPatterns = "/secure/*")
 public class JWTFilter implements Filter{
     @Override

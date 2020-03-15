@@ -18,7 +18,7 @@ public class SecureController {
 
 
 
-    @PostMapping(value = "/secure/getUserInfo")
+    @RequestMapping(value = "/secure/getUserInfo")
     @ResponseBody
     public User getUserInfo(HttpServletRequest request, HttpServletResponse response){
         String phoneNumber = request.getParameter("phoneNumber");
