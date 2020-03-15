@@ -1,9 +1,6 @@
 package com.extra.demo.bean;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 public class User {
 
@@ -20,12 +17,23 @@ public class User {
 
     @Column
     private String emall;
-
+    //临时数据,不往数据库存
     @Column
     private String phoneNumber;
 
-    @Column
-    private Integer clickNumber;
+
+    //临时变量:验证码,用于接受前端参数时自动绑定
+    //不会存入数据库
+    @Transient
+    private String verifyNumber;
+
+    public String getVerifyNumber() {
+        return verifyNumber;
+    }
+
+    public void setVerifyNumber(String verifyNumber) {
+        this.verifyNumber = verifyNumber;
+    }
 
     public String getId() {
         return id;
@@ -67,12 +75,5 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public Integer getClickNumber() {
-        return clickNumber;
-    }
-
-    public void setClickNumber(Integer clickNumber) {
-        this.clickNumber = clickNumber;
-    }
 
 }
