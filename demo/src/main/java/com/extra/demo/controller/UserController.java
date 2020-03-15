@@ -39,7 +39,8 @@ public class UserController {
         if(verifyCodeRes.equals("right number")){
             String saveRes = userService.saveUserInfo(user);
             if(saveRes.equals("1")){
-                return "成功";
+                String token = JWTUtil.createToken(user);
+                return token;
             }else{
                 return "插入过程发生异常";
             }
@@ -58,43 +59,66 @@ public class UserController {
 
     }
 
-    //判断手机号,邮箱是否重复,然后才能进行发送手机验证码
-    @RequestMapping("checkEmallAndPhone")
+    @RequestMapping("checkEmall")
     @ResponseBody
-    public String checkEmallAndPhone(@RequestBody Map<String,String> map){
+    public String checkEmall(@RequestBody Map<String,String> map){
 
         String emall = map.get("emall");
-        String phoneNumber = map.get("phoneNumber");
-
-        String emallRes = userService.checkEmall(emall);
-        String phoneNumberRes = userService.checkPhoneNumber(phoneNumber);
-        String res="";
-
-        if(emallRes.equals("1")){
-            res += "邮箱已存在";
-
-        }
-        if(phoneNumberRes.equals("1")){
-            res += "手机号已存在";
-        }
-        if(emallRes.equals("1")&&phoneNumberRes.equals("1")){
-            res = "无重复";
-        }
-
-
-        /*
-         * 有验证码且正确:right number
-         * 有验证码不正确:wrong number
-         * 无验证码存在:not exist
-         * */
-        if(res.equals("right number")){
-            return "成功";
-        }else if(res.equals("wrong number")){
-            return "验证码错误";
-        }else {
-            return "验证码超时";
-        }
+        return  userService.checkEmall(emall).equals("0")?"该邮箱不存在":"该邮箱已存在";
     }
+
+    @RequestMapping("checkPhoneNumber")
+    @ResponseBody
+    public String checkPhoneNumber(@RequestBody Map<String,String> map){
+
+        String phoneNumber = map.get("phoneNumber");
+        return  userService.checkPhoneNumber(phoneNumber).equals("0")?"该手机号不存在":"该手机号已存在";
+    }
+
+
+
+
+
+
+
+    //直接拆成判断手机号,和判断邮箱两个
+    //判断手机号,邮箱是否重复,然后才能进行发送手机验证码
+//    @RequestMapping("checkEmallAndPhone")
+//    @ResponseBody
+//    public String checkEmallAndPhone(@RequestBody Map<String,String> map){
+//
+//        String emall = map.get("emall");
+//        String phoneNumber = map.get("phoneNumber");
+//
+//        String emallRes = userService.checkEmall(emall);
+//        String phoneNumberRes = userService.checkPhoneNumber(phoneNumber);
+//        String res="";
+//
+//        if(emallRes.equals("1")){
+//            res += "邮箱已存在";
+//
+//        }
+//        if(phoneNumberRes.equals("1")){
+//            res += "手机号已存在";
+//        }
+//        if(emallRes.equals("1")&&phoneNumberRes.equals("1")){
+//            res = "无重复";
+//        }
+//
+//
+//        /*
+//         * 有验证码且正确:right number
+//         * 有验证码不正确:wrong number
+//         * 无验证码存在:not exist
+//         * */
+//        if(res.equals("right number")){
+//            return "成功";
+//        }else if(res.equals("wrong number")){
+//            return "验证码错误";
+//        }else {
+//            return "验证码超时";
+//        }
+//    }
 
 
 

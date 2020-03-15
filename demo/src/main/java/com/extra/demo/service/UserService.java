@@ -10,7 +10,6 @@ public interface UserService {
 
     String saveUserInfo(User user);
 
-
     String checkEmall(String emall);
 
     String checkPhoneNumber(String phoneNumber);
