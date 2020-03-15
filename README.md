@@ -1,9 +1,10 @@
 # demo2
-
 通用mapper进行单表插入,查询
 redis实现短信验证码(注册,登录)
 JWT生成token
 filter拦截用户资料请求
+
+### 流程
 
 
 注册:
@@ -31,8 +32,54 @@ checkPhoneNumber
 
 
 
+=======================================================================
+#### 所有接口均为post请求,数据格式均为json
+ ## 接口
+
+获取用户信息,需要在请求头加一个authorization,值是token  
+http://localhost:8080/secure/getUserInfo
+authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZU51bWJlciI6IjExMjExMSIsIm5hbWUiOiJ6aGFuZ3NhbiIsImlkIjoiNCIsImV4cCI6MTU4NDI2Njg5OCwiaWF0IjoxNTg0MjY1MDk4fQ.97qfRDtkkHvFsRj_M1RBm-3PgrAliuN2zJAKf8xO2K8
+
+返回值:User对象
 
 
+http://localhost:8080/setVerifyCode
+{
+	"phoneNumber": "112111"
+}  
+ 返回值   set:设置成功,到控制台查看验证码,reset:重新设置验证码,unset:设置失败
 
+
+http://localhost:8080/checkEmall
+{
+    "emall": "114151977@qq.com"
+}  
+返回值:存在,不存在
+
+http://localhost:8080/checkPhoneNumber
+{
+    "emall": "110111"
+}  
+返回值同上
+
+登录,需要短信验证码
+http://localhost:8080/login
+{
+    "phoneNumber": "112111",
+    "verifyNumber": "389317"
+}  
+verifyNumber需要调用发送验证码接口然后在控制台获取  
+返回值:token
+
+http://localhost:8080/signUp
+{
+    "name": "zhangsan",
+    "gender": "0",
+    "emall": "76977@qq.com",
+    "phoneNumber": "112111",
+    "verifyNumber":"325053"
+}  
+验证码需获取  
+返回值:token  
 
 
